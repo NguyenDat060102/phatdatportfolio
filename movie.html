@@ -1,0 +1,406 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Portfolio - Movie Industry</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="index.html">MOVIE PROJECT</a></h1>
+						<nav id="nav">
+							<ul>
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<li><a href="index.html">Home</a></li>
+											<li><a href="movie.html">Movie Project</a></li>
+											<!--<li><a href="elements.html">Data Cleaning SQL</a></li>-->
+											<li><a href="sales.html">Sales Management Project</a></li>
+											<!--<li><a href="#">Log In</a></li>-->
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<article id="main">
+						<header>
+							<h2>MOVIE INDUSTRY</h2>
+							<ul class="actions special">
+								<li><a href="index.html" class="button">HOME</a></li><br />
+							</ul>
+						</header>
+						<section class="wrapper style5">
+							<div class="inner">
+								<!--<div class="image-item"><img src="images/pic02.jpg" height = "400" alt="" /></div><div class="content"></div>-->
+								<ul class="actions special">
+									<li><a href="https://github.com/NguyenDat060102/MovieProject" class="button icon solid fa-download">DOWNLOAD</a></li>
+								</ul>
+								<h7>Context:</h7>
+								<p>Is the movie industry dying? is Netflix the new entertainment king? Those were the first questions that lead me to create a dataset focused on movie revenue and analyze it over the last decades. But, why stop there? There are more factors that intervene in thing kind of thing, like actors, genres, user ratings and more. And now, anyone with experience (you) can ask specific questions about themovie industry, and get answers.
+									<br>
+								</p>
+								<h7>Dataset description:</h7>
+								<p>There are 7652 movies in the dataset (220 movies per year, 1986-2020).<br>
+									Columns contain: Name, rating, year, budget, gross, votes, scores, runtime, country,...<br>
+									Data cell: +11500 data cells included (included NaN, incorrect update…)<br>
+								</p>
+								<h7>Job to be done:</h7>
+								<p>Task 1: Visualize top movies based on some features (budget, gross, votes, score) and determine the top movies’ genre/cast frequency.
+									<br>
+									<br>
+									Task 2: Visualize the data to find the top company with the highest gross in a year? Build hypothesis about why it has the highest sales?<br>
+									<br>
+									Task 3: Which movies features have a strong effect on the gross of a movie? Build hypothesis about why it has such a strong effect on gross?<br>
+								</p>
+								<h7>THE PROCESS</h7>
+								</p>
+								<h3>Data importing & cleansing</h3>
+
+								<style>
+									.table.table-dark{
+										background: #f1f1f1;
+										color: #333;
+										overflow-y: scroll;
+										width: 1025px;
+										height: 50px;
+									}
+
+									.table.table-hover tr:hover{
+										background: #f1f1f1;
+									}
+
+									.box-scroll{
+										background: #f1f1f1;
+										color: #333;
+										overflow-y: scroll;
+										width: 1025px;
+										height: 300px;
+									}
+								</style>
+								<!--
+									<table class="table table-dark table-hover">
+										<tr>
+											<td>
+												# First let's import the packages we will use in this project <br>
+												# You can do this all now or as you need them<br></p>
+												import pandas as pd<br>
+												import numpy as np<br>
+											</td>
+										</tr>
+									</table>
+								-->
+								</p>
+								<h4> Step 1: Import needed packages for project and convert csv file into dataframe. </h4>
+									<div class="box-scroll"> 
+										# First let's import the packages we will use in this project <br>
+										# You can do this all now or as you need them<br></p>
+										import pandas as pd<br>
+										import numpy as np<br>
+										import seaborn as sns<br>
+										import squarify #!pip install squarify<br>
+										import matplotlib.pyplot as plt<br>
+										import matplotlib.mlab as mlab<br>
+										import matplotlib<br>
+										from wordcloud import WordCloud #!pip install wordcloud<br>
+										from matplotlib.pyplot import figure<br>
+										plt.style.use('ggplot')<br>
+										%matplotlib inline<br>
+										matplotlib.rcParams['figure.figsize'] = (12,8)<br>
+										pd.options.mode.chained_assignment = None<br>
+									</div>
+								</p>
+									<table class="table table-dark table-hover">
+										<tr>
+											<td>
+												# Now we need to read in the data <br>
+												df = pd.read_csv(r'C:\Users\Admin\OneDrive\Documents\Data - Porfolio\Movie Industry Project\movies.csv\movies.csv')<br>
+											</td>
+										</tr>
+									</table>
+								</p>
+								<div class="image-item"><img src="images/dataframe.jpg" height = "290" alt="" /></div><div class="content"></div>
+								<hr />
+
+								<h4> Step 2: Defining problem of incorrect data & Cleansing solutions.</h4>
+								<h8>Problem 1: There are NaN values in data frame (budget - 28%, gross - 2%, rating - 1%)</h8>
+								</p>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# Let's loop through the data and see if there is anything missing <br>
+											<p></p>
+											for col in df.columns:<br>
+											pct_missing = np.mean(df[col].isnull())<br>
+											print('{} - {}%'.format(col, round(pct_missing*100)))<br></td>
+									</tr>
+								</table>
+								<div class="image-items"><img src="images/missingvalues.jpg" height = "350" alt="" /></div><div class="content"></div>
+								<h8>Solution: Drop all rows that have missing data, and have about 71% of your data remaining</h8>
+								</p>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											df = df.dropna() <br>
+									</tr>
+								</table>
+
+								<h8>Problem 2: There are incorrect format of data: ‘released’ contains country name and 'budget' & 'gross' with incorrect type float64 instead of int64 </h8>
+								</p>
+								<div class="image-items"><img src="images/datatype.jpg" height = "350" alt="" /></div><div class="content"></div>
+								<h8>Solution: Change into suitable datatype (from float64 to int64) </h8>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# Change datatype of budget and gross columns (due to number limitation) <br>
+											df['budget'] = df['budget'].astype('int64') <br>
+											df['gross'] = df['gross'].astype('int64') <br>
+											<p></p>
+											# Create correct year column based on released column <br>
+											df['yearcorrect'] = df['released'].str.extract(pat = '([0-9]{4})').astype(int) <br>
+											<p></p>
+											# Full scolling for easy viewing/assessing dataset <br>
+											pd.set_option('display.max_rows',None) <br>
+									</tr>
+								</table>
+								</p>
+								<hr />
+
+								<h3>Manipulate data and answer task question</h3>
+								<h4> Task 1: Visualize top movies based on some features (budget, gross, votes, score) and determine the top movies’ genre/cast frequency. </h4>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# top 10 movies based on some features by barh plot in canvas <br>
+											top_movie_num = 10 <br>
+											top_movies_based_on = ["budget", "gross", "votes", "score","runtime","yearcorrect"] <br>
+											fig, ax = plt.subplots(len(top_movies_based_on)//3, 3, figsize=(32,10)) <br>
+											<p></p>
+											for i, col in enumerate(top_movies_based_on): <br>
+												r, c = i//3, i%3 <br>
+												top_movies_by = df.sort_values(by=[col], ascending=False).head(top_movie_num) <br>
+												ax[r][c].barh(top_movies_by["name"], top_movies_by[col], color= colors.colors) <br>
+												ax[r][c].set_title(f"top movies based on {col}", fontsize=24, pad=20) <br>
+												ax[r][c].tick_params(axis='both', which='major', labelsize=16) <br>
+												ax[r][c].invert_yaxis()     <br>
+											<p></p>
+											plt.suptitle('Top movies based on some features',fontsize=30, y=1) <br>
+											fig.tight_layout() <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 0.png" height = "290" alt="" /></div><div class="content"></div>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# plot top 10 genre frequency with treemap  <br>
+											top_genres_num = 10 <br>
+											genres_info = df["genre"].value_counts().head(top_genres_num) <br>
+											<p></p>
+											plt.figure(figsize=(15, 10)) <br>
+											plt.title("Genres", fontsize=25, pad=20) <br>
+											squarify.plot(genres_info, label=genres_info.keys(), text_kwargs={'fontsize':12}, bar_kwargs={'alpha':.7}, pad=True, color=colors.colors) <br>
+											plt.axis("off"); <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 3.png" height = "550" alt="" /></div><div class="content"></div>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# plot top 10 production countries based on movies' production  <br>
+											top_contries_num = 10  <br>
+											production_contries_info = df["country"].value_counts().head(top_contries_num)  <br>
+											<p></p>
+											plt.figure(figsize=(30, 8))  <br>
+											plt.xticks(rotation=65, fontsize=15)  <br>
+											plt.ylabel("Nb. of occurences", fontsize=18)  <br>
+											plt.title("Production countries", fontsize=25, pad=20)  <br>
+											plt.bar(dict(production_contries_info).keys(), dict(production_contries_info).values(), color=colors.colors);  <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 4.png" height = "300" alt="" /></div><div class="content"></div>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# plot unique cast frequency <br>
+											cast_info = df["star"].value_counts().head(10) <br>
+											<p></p>
+											wordcloud = WordCloud(background_color='white') <br>
+											wordcloud.generate_from_frequencies(dict(cast_info)) <br>
+											<p></p>
+											plt.figure(figsize=(15,10)) <br>
+											plt.title("Cast", fontsize=25, pad=20) <br>
+											plt.imshow(wordcloud, interpolation="bilinear") <br>
+											plt.axis("off"); <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 5.png" height = "400" alt="" /></div><div class="content"></div>
+								<hr />
+								
+								<h4>Task 2: Visualize the data to find the top company with the highest gross in a year? Build hypothesis about why it has the highest sales? </h4>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											#plot number of movies released over years <br>
+											plt.xticks(fontsize=12) <br>
+											plt.ylabel("Nb. of occurences", fontsize=14) <br>
+											plt.title("Movie release year", fontsize=25, pad=20) <br>
+											df["yearcorrect"].plot.hist(figsize=(15,5), bins=100, color= "red"); <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 6.png" height = "325" alt="" /></div><div class="content"></div>
+								<h5>Analysis</h5>
+								<blockquote>
+										Overall, the movie industry has grown over the years with the advancement of science and technology.<Br>
+										Lowest point: the decline in end of 2019 comes from the covid 19 epidemic, affecting the behavior of going to cinemas. Production might be shut down.<Br>
+								</blockquote>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											#plot top 10 sum gross company in one year <br>
+											CompanyGrossSumOneYear = df.groupby(['company', 'year'])[["gross"]].sum() <br>
+											CompanyGrossSumSortedOneYear = CompanyGrossSumOneYear.sort_values(['gross','company','year'], ascending = False).nlargest(10,'gross') <br>
+											CompanyGrossSumSortedOneYear = CompanyGrossSumSortedOneYear['gross'].astype('int64')  <br>
+											CompanyGrossSumSortedOneYear <br>
+									</tr>
+								</table>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											ax = CompanyGrossSumSortedOneYear.plot.barh(x='company', y='gross', color = colors.colors)
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 1.png" height = "380" alt="" /></div><div class="content"></div>
+								<h5>Analysis</h5>
+								<blockquote>
+										Highest: 2019 is a "bumper" year for cartoon fans from Walt Disney Pictures with a series of famous titles such as Frozen 2, The Lego Movie 2, Toy Story, 4 The Angry Birds Movie 2, .. .<br>
+										Besides, there are representatives from other big rivals such as Marvel in 2018 Avengers: Infinity war, Black Panther, Ant-Man and the Wasp<br>
+								</blockquote>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											#plot top 10 sum gross company <br>
+											CompanyGrossSum = df.groupby(['company'])[["gross"]].sum() <br>
+											CompanyGrossSumSorted = CompanyGrossSum.sort_values(['gross','company'], ascending = False)[:10] <br>
+											CompanyGrossSumSorted = CompanyGrossSumSorted['gross'].astype('int64')  <br>
+											CompanyGrossSumSorted <br>
+									</tr>
+								</table>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											ax = CompanyGrossSumSorted.plot.barh(x='company', y='gross', color = colors.colors)
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 2.png" height = "380" alt="" /></div><div class="content"></div>
+								<h5>Analysis</h5>
+								<blockquote>
+										In terms of top gross revenue in the movie industry, the industry giants maintly from the US are led by Warmer Bros, Universal Pictures, Marvel Studios,... <br>
+								</blockquote>
+								<hr />
+
+								<h4>Task 3: Which movies features have a strong effect on the gross of a movie? Build hypothesis about why it has such a strong effect on gross?</h4>
+								<h5> Check correlation by using scatterplot</h5>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# gross & budget scatterplot <br>
+											sns.regplot(x="budget", y="gross", data=df, line_kws= {"color" :"black"}) <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 7.png" height = "500" alt="" /></div><div class="content"></div>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# gross & score scatterplot <br>
+											sns.regplot(x="score", y="gross", data=df, line_kws= {"color" :"black"}) <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 8.png" height = "500" alt="" /></div><div class="content"></div>
+								<h5> Calculate correlation based on formula</h5>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# Correlation Matrix between all numeric columns using pearson method by default (3 methods: pearson, kendall, and spearman) <br>
+											df.corr(method ='pearson') <br>
+									</tr>
+								</table>
+								<p></p>
+
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# Correlation table (numeric column only)<br>
+											correlation_matrix = df.corr()<br>
+											sns.heatmap(correlation_matrix, annot = True)<br>
+											plt.title("Correlation matrix for Numeric Features")<br>
+											plt.xlabel("Movie features")<br>
+											plt.ylabel("Movie features")<br>
+											plt.show() <br>
+									</tr>
+								</table>
+								<div class="image-item"><img src="images/chart 9.png" height = "550" alt="" /></div><div class="content"></div>
+								<p></p>
+
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											# Sort and find pairs with high correlation (>0.5 & <1)<br>
+											strong_pairs = correlation_matrix.unstack().sort_values(kind="quicksort", ascending = False) <br>
+											strong_pairs = sorted_pairs[(abs(sorted_pairs) > 0.5) & (abs(sorted_pairs) < 1)]<br>
+											print(strong_pairs)<br>
+									</tr>
+								</table>
+								<div class="image-items"><img src="images/correlation.jpg" height = "100" alt="" /></div><div class="content"></div>
+								<p></p>
+								<h5>Insights</h5>
+								<blockquote>
+									The gross revenue have the – correlation with the movie's budget & votes from audiences. <br>
+									 We can conclude: (1) movie with high budget which normally brings hight gross revenue, and in contrast. (2) Movie with high voting score from audiences which means it is loved & on popular will bring a considerable gross revenue.<br> 
+								</blockquote>
+								<p></p>
+							</div>
+						</section>
+					</article>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/phatdat6102/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://www.facebook.com/nguyenphatdat060102" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://github.com/NguyenDat060102" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<li><a href="mailto:datnguyen060102@gmail.com" target="_blank" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE HTML>
+<!--
+	Spectral by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Portfolio - Sales Managment</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<h1><a href="index.html">SALES MANAGEMENT PROJECT</a></h1>
+						<nav id="nav">
+							<ul>
+								<li class="special">
+									<a href="#menu" class="menuToggle"><span>Menu</span></a>
+									<div id="menu">
+										<ul>
+											<li><a href="index.html">Home</a></li>
+											<li><a href="movie.html">Movie Project</a></li>
+											<!--<li><a href="elements.html">Data Cleaning SQL</a></li>-->
+											<li><a href="sales.html">Sales Management Project</a></li>
+											<!--<li><a href="#">Log In</a></li>-->
+										</ul>
+									</div>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Main -->
+					<article id="main">
+						<header>
+							<h2>SALES MANAGEMENT</h2>
+							<ul class="actions special">
+								<li><a href="index.html" class="button">HOME</a></li><br />
+							</ul>
+						</header>
+						<section class="wrapper style5">
+							<div class="inner">
+								<div class="image-item"><img src="images/pic03.jpg" height = "465" alt="" /></div><div class="content"></div>
+								<ul class="actions special">
+									<li><a href="https://github.com/NguyenDat060102/SalesManagementProject" class="button icon solid fa-download">DOWNLOAD</a></li>
+								</ul>
+								<h7>Business Request & User Stories:</h7>
+								<p>The business request for this data analyst project was an executive sales report for sales managers. Based on the request that was made from the business we following user stories were defined to fulfill delivery and ensure that acceptance criteria’s were maintained throughout the project.
+									<br>
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>As a (role)</th>
+													<th>Request / Demand</th>
+													<th>So that I (user value)</th>
+													<th>Acceptance Criteria</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>Sales Manager</td>
+													<td>To get a dashboard overview of internet sales</td>
+													<td>Can follow better which customers and products sells the best</td>
+													<td>A Power BI dashboard which updates data once a day</td>
+												</tr>
+												<tr>
+													<td>Sales Representative</td>
+													<td>A detailed overview of Internet Sales per Customers</td>
+													<td>Can follow up my customers that buys the most and who we can sell more</td>
+													<td>A Power BI dashboard which allows me to filter data for each customer</td>
+												</tr>
+												<tr>
+													<td>Sales Representative</td>
+													<td>A detailed overview of Internet Sales per Products</td>
+													<td>Can follow up my Products that sells the most</td>
+													<td>A Power BI dashboard which allows me to filter data for each Product</td>
+												</tr>
+												<tr>
+													<td>Sales Manager	</td>
+													<td>A dashboard overview of internet sales</td>
+													<td>Follow sales over time against budget</td>
+													<td>A Power Bi dashboard with graphs and KPIs comparing against budget</td>
+												</tr>
+											</tbody>
+										</table>
+								
+								</p>
+								<h7>Data Cleansing & Transformation (SQL):</h7>
+								<p>To create the necessary data model for doing analysis and fulfilling the business needs defined in the user stories the following tables were extracted using SQL. <br>
+									<p></p>
+									One data source (sales budgets) were provided in Excel format and were connected in the data model in a later step of the process.<br>
+									<p></p>
+									Below are the SQL statements for cleansing and transforming necessary data.<br>						
+								</p>
+								<!-- Table 1 -->
+								<h3>DIM_Calendar:<br></h3>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											-- Cleansed DIM_Date Table -- <br>
+											SELECT <br>
+											[DateKey], <br>
+											[FullDateAlternateKey] AS Date, <br>
+											[EnglishDayNameOfWeek] AS Day, <br>
+											[EnglishMonthName] AS Month, <br>
+											Left([EnglishMonthName], 3) AS MonthShort, <br>
+											-- Useful for front end date navigation and front end graphs.<br>
+											[MonthNumberOfYear] AS MonthNo, <br>
+											[CalendarQuarter] AS Quarter, <br>
+											[CalendarYear] AS Year --[CalendarSemester], <br>
+											FROM <br>
+											[AdventureWorksDW2019].[dbo].[DimDate] <br>
+											WHERE <br>
+											CalendarYear >= 2019 -- Based on business request<br>
+										</td>
+									</tr>
+								</table>
+								<!-- Table 2 -->
+								<h3>DIM_Customers:<br></h3>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											-- Cleansed DIM_Customers Table -- <br>
+											SELECT<br>
+											  c.customerkey AS CustomerKey, <br>
+											  c.firstname AS [First Name], <br>
+											  c.lastname AS [Last Name], <br>
+											  c.firstname + ' ' + lastname AS [Full Name], -- Combined First and Last Name<br>
+											  CASE c.gender WHEN 'M' THEN 'Male' WHEN 'F' THEN 'Female' END AS Gender, -- Use When-Then clause to convert Gender (M/F) into full (Male/Female)<br>
+											  c.datefirstpurchase AS DateFirstPurchase, <br>
+											  g.city AS [Customer City] -- Joined in Customer City from Geography Table<br>
+											FROM<br>
+											  [AdventureWorksDW2019].[dbo].[DimCustomer] as c<br>
+											  LEFT JOIN dbo.dimgeography AS g ON g.geographykey = c.geographykey  -- Find Customer City<br>
+											ORDER BY<br>
+											  CustomerKey ASC -- Ordered List by CustomerKey<br>
+										</td>
+									</tr>
+								</table>
+								<!-- Table 3 -->
+								<h3>DIM_Products:<br></h3>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											-- Cleansed DIM_Products Table -- <br>
+											SELECT<br>
+											-- Notes: dbo.DimProductSubcategory AS ps AND dbo.DimProductCategory AS pc<br>
+											  p.[ProductKey],<br>
+											  p.[ProductAlternateKey] AS ProductItemCode, <br>
+											  p.[EnglishProductName] AS [Product Name], <br>
+											  ps.EnglishProductSubcategoryName AS [Sub Category], -- Joined in from Sub Category Table<br>
+											  pc.EnglishProductCategoryName AS [Product Category], -- Joined in from Category Table<br>
+											  p.[Color] AS [Product Color], <br>
+											  p.[Size] AS [Product Size],<br>
+											  p.[ProductLine] AS [Product Line], <br>
+											  p.[ModelName] AS [Product Model Name], <br>
+											  p.[EnglishDescription] AS [Product Description], <br>
+											  ISNULL (p.Status, 'Outdated') AS [Product Status] -- If NULL then Outdated (for easy classfying)<br>
+											FROM<br>
+											  [AdventureWorksDW2019].[dbo].[DimProduct] as p<br>
+											  LEFT JOIN dbo.DimProductSubcategory AS ps ON ps.ProductSubcategoryKey = p.ProductSubcategoryKey <br>
+											  LEFT JOIN dbo.DimProductCategory AS pc ON ps.ProductCategoryKey = pc.ProductCategoryKey <br>
+											order by<br>
+											  p.ProductKey asc<br>
+										</td>
+									</tr>
+								</table>
+								<!-- Table 4 -->
+								<h3>FACT_InternetSales:<br></h3>
+								<table class="table table-dark table-hover">
+									<tr>
+										<td>
+											-- Cleansed FACT_InternetSales Table -- <br>
+											SELECT<br>
+											  [ProductKey], <br>
+											  [OrderDateKey], <br>
+											  [DueDateKey], <br>
+											  [ShipDateKey], <br>
+											  [CustomerKey], <br>
+											  [SalesOrderNumber], <br>
+											  [SalesAmount]<br>
+											FROM<br>
+											  [AdventureWorksDW2019].[dbo].[FactInternetSales]<br>
+											WHERE<br>
+											  LEFT (OrderDateKey, 4) >= YEAR(GETDATE()) -4 -- (2019-2023 now = 4 years) Ensures we always only bring two years of date from extraction.<br>
+											ORDER BY<br>
+											  OrderDateKey ASC<br>
+										</td>
+									</tr>
+								</table>
+								<h7>Data Model:</h7>
+								<p>Below is a screenshot of the data model after cleansed and prepared tables were read into Power BI.<br>
+								<p></p>
+								This data model also shows how FACT_Budget hsa been connected to FACT_InternetSales and other necessary DIM tables.<br>
+								<div class="image-item"><img src="images/pic06.jpg" height = "465" alt="" /></div><div class="content"></div>
+
+								<h7>Sales Management Dashboard:</h7>
+								<p>The finished sales management dashboard with one page with works as a dashboard and overview, with two other pages focused on combining tables for necessary details and visualizations to show sales over time, per customers and per products.<br>
+								<p>Click button below to to open the dashboard!
+									<ul class="actions special">
+										<li><a href="https://app.powerbi.com/reportEmbed?reportId=d23c0697-ea4f-4bd6-b16b-8288b540970f&autoAuth=true&ctid=5531d70d-17a0-48c8-bb68-8568625cc647" class="button">Show Dashboard</a></li><br />
+									</ul>
+								<div class="image-chart"><img src="images/pic03.jpg" height = "500" alt="" /></div><div class="content"></div>
+
+								<style>
+									.table.table-dark{
+										background: #f1f1f1;
+										color: #333;
+										overflow-y: scroll;
+										width: 1025px;
+										height: 50px;
+									}
+
+									.table.table-hover tr:hover{
+										background: #f1f1f1;
+									}
+
+									.box-scroll{
+										background: #f1f1f1;
+										color: #333;
+										overflow-y: scroll;
+										width: 1025px;
+										height: 300px;
+									}
+								</style>
+								<!--
+									<table class="table table-dark table-hover">
+										<tr>
+											<td>
+												# First let's import the packages we will use in this project <br>
+												# You can do this all now or as you need them<br></p>
+												import pandas as pd<br>
+												import numpy as np<br>
+											</td>
+										</tr>
+									</table>
+								-->
+						</section>
+					</article>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<ul class="icons">
+							<li><a href="https://www.linkedin.com/in/phatdat6102/" class="icon brands fa-linkedin"><span class="label">LinkedIn</span></a></li>
+							<li><a href="https://www.facebook.com/nguyenphatdat060102" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
+							<li><a href="https://github.com/NguyenDat060102" class="icon brands fa-github"><span class="label">Github</span></a></li>
+							<li><a href="mailto:datnguyen060102@gmail.com" target="_blank" class="icon solid fa-envelope"><span class="label">Email</span></a></li>
+						</ul>
+						<ul class="copyright">
+							<li>&copy; Untitled</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						</ul>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
